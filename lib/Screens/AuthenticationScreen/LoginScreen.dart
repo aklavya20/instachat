@@ -239,6 +239,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       loginUser(
                         emailController.text,
                         passwordController.text,
+                        ref.read(selectedRoleProvider),
                       ).then((value) {
                         if (value == 'Success') {
                           ScaffoldMessenger.of(context).showSnackBar(

@@ -332,6 +332,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         usernameController.text,
                         emailController.text,
                         passwordController.text,
+                        ref.read(selectedRoleProvider),
                       ).then((value) {
                         if (value == 'Success') {
                           ScaffoldMessenger.of(context).showSnackBar(

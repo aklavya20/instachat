@@ -12,20 +12,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  User? _currentUser;
-  bool _isLoading = true;
+  User? user;
 
   @override
   void initState() {
     super.initState();
     getUser().then((value) {
-      _currentUser = value;
-      if (_currentUser == null || _currentUser?.emailVerification == false) {
+      setState(() {
+        user = value;
+      });
+      if (user?.emailVerification == false) {
         Navigator.pushReplacementNamed(context, '/verify');
-      } else {
-        setState(() {
-          _isLoading = false;
-        });
       }
     });
   }
@@ -44,9 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('InstaChat'),

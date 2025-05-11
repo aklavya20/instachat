@@ -1,4 +1,5 @@
-import 'package:appwrite/models.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:instachat/Appwrite/AppwriteService.dart';
 import 'package:instachat/Appwrite/Authentication.dart';
@@ -11,34 +12,14 @@ class VerifyScreen extends StatefulWidget {
 }
 
 class _VerifyScreenState extends State<VerifyScreen> {
-  User? _currentUser;
   bool showResetButton = false;
 
   @override
   void initState() {
     super.initState();
-    getUser().then((value) {
-      if (_currentUser?.emailVerification == false) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(11),
-            ),
-            backgroundColor: Colors.amber,
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              'We have sent a verification link to ${_currentUser?.email}',
-            ),
-            duration: Duration(seconds: 2),
-          ),
-        );
-      } else {
-        Navigator.pushReplacementNamed(context, '/home');
-      }
-    });
 
-    sendVerificationEmail().then((value) {
-      if (value) {
+    getUser().then((value) {
+      if (value != null && value.emailVerification == false) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             shape: RoundedRectangleBorder(
@@ -46,25 +27,47 @@ class _VerifyScreenState extends State<VerifyScreen> {
             ),
             backgroundColor: Colors.amber,
             behavior: SnackBarBehavior.floating,
-            content: Text('Please check your email for the verification link.'),
+            content: Text('We have sent a verification link to ${value.email}'),
             duration: Duration(seconds: 2),
           ),
         );
-      } else {
-        setState(() {
-          showResetButton = true;
+
+        sendVerificationEmail().then((success) {
+          if (success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(11),
+                ),
+                backgroundColor: Colors.amber,
+                behavior: SnackBarBehavior.floating,
+                content: Text(
+                  'Please check your email for the verification link.',
+                ),
+                duration: Duration(seconds: 2),
+              ),
+            );
+          } else {
+            setState(() {
+              showResetButton = true;
+            });
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(11),
+                ),
+                backgroundColor: Colors.red,
+                behavior: SnackBarBehavior.floating,
+                content: Text('Failed to send verification email.'),
+                duration: Duration(seconds: 2),
+              ),
+            );
+          }
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(11),
-            ),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            content: Text('Failed to send verification email.'),
-            duration: Duration(seconds: 2),
-          ),
-        );
+      } else {
+        // Redirect only if we are sure email is verified
+        Navigator.pushReplacementNamed(context, '/home');
       }
     });
   }
@@ -136,7 +139,10 @@ class _VerifyScreenState extends State<VerifyScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  child: Text('Resend Email Verification'),
+                  child: Text(
+                    'Resend Email Verification',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 )
                 : SizedBox(),
           ],

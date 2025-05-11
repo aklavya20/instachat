@@ -1,12 +1,12 @@
 import 'dart:convert' show jsonEncode;
-
 import 'package:appwrite/appwrite.dart';
+import 'package:instachat/Constants/Constants.dart';
+
+Constants constants = Constants();
 
 Client client = Client()
-    .setEndpoint(
-      'https://8080-appwrite-integrationfor-r0qkffgkvqn.ws-us118.gitpod.io/v1',
-    )
-    .setProject('67f26b71002a16a7623d');
+    .setEndpoint(constants.AppwriteEndpoint)
+    .setProject(constants.AppwriteProjectId);
 
 Account account = Account(client);
 Functions functions = Functions(client);
@@ -15,8 +15,9 @@ Future updateUserLabel(String userId, String role) async {
   try {
     final result = await functions.createExecution(
       functionId: '67fe759000389b9ca0ec',
-      path: jsonEncode({'userId': userId, 'role': role}),
+      path: jsonEncode({'userId': userId, 'labels': role}),
     );
+    print("This is Our Result:result");
     return result.status == 'completed'
         ? 'Label Updated'
         : 'Failed to update label';
@@ -72,4 +73,13 @@ Future checkUserSession() async {
 
 Future logoutUser() async {
   await account.deleteSession(sessionId: "current");
+}
+
+Future<bool> sendVerificationEmail() async {
+  try {
+    await account.createVerification(url: constants.VerificationURL);
+    return true;
+  } catch (e) {
+    return false;
+  }
 }

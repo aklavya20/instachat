@@ -1,4 +1,6 @@
+import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
+import 'package:instachat/Appwrite/AppwriteService.dart';
 import 'package:instachat/Appwrite/Authentication.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,6 +12,23 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  User? _currentUser;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getUser().then((value) {
+      _currentUser = value;
+      if (_currentUser == null || _currentUser?.emailVerification == false) {
+        Navigator.pushReplacementNamed(context, '/verify');
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
+  }
 
   static final List<Widget> _pages = <Widget>[
     Center(child: Text('Chats', style: TextStyle(fontSize: 24))),
@@ -25,6 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('InstaChat'),

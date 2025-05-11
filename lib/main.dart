@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instachat/Screens/AuthenticationScreen/ForgotPassword.dart';
 import 'package:instachat/Screens/AuthenticationScreen/LoginScreen.dart';
 import 'package:instachat/Screens/AuthenticationScreen/SignupScreen.dart';
+import 'package:instachat/Screens/AuthenticationScreen/VerifyScreen.dart';
 import 'package:instachat/Screens/HomeScreen/HomeScreen.dart';
 import 'package:instachat/Screens/SplashScreen/SplashScreen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,6 +25,7 @@ class Instachat extends StatelessWidget {
         '/signup': (context) => const SignupScreen(),
         '/forgot-password': (context) => const ForgotPasswordDialog(),
         '/home': (context) => const HomeScreen(),
+        '/verify': (context) => const VerifyScreen(),
       },
     );
   }

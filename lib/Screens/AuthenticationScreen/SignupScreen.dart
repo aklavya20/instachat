@@ -15,6 +15,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final obscure = ref.watch(passwordVisibilityProvider);
@@ -355,7 +356,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                           );
                           Navigator.pushNamedAndRemoveUntil(
                             context,
-                            '/home',
+                            '/verify',
                             (Route<dynamic> route) => false,
                           );
                         } else {

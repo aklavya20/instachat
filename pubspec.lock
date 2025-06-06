@@ -81,14 +81,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
-  dart_appwrite:
-    dependency: "direct main"
-    description:
-      name: dart_appwrite
-      sha256: "38c1d4325c02fcb8fe09c9376ccd35aae450df2d95dfe9d9550489613ea2d930"
-      url: "https://pub.dev"
-    source: hosted
-    version: "16.0.0"
   desktop_webview_window:
     dependency: transitive
     description:

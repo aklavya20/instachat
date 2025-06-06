@@ -1,7 +1,5 @@
 class Constants {
   final String AppwriteEndpoint =
-      "https://8080-aklavya20-integrationfo-nyegpb4hh8i.ws-us118.gitpod.io/v1";
-  final String AppwriteProjectId = "68236a41003b6bb7ed6f";
-  final String VerificationURL =
-      "https://3000-aklavya20-instachatback-dwerag1m726.ws-us118.gitpod.io/verify";
+      "https://8080-aklavya20-appwriteforgi-y01kyq7op2w.ws-us120.gitpod.io/v1";
+  final String AppwriteProjectId = "68432cdb00004deb53c1";
 }

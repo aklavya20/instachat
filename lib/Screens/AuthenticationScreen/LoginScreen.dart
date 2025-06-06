@@ -1,7 +1,5 @@
-import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:instachat/Appwrite/AppwriteService.dart';
 import 'package:instachat/Appwrite/Authentication.dart';
 import 'package:instachat/Screens/AuthenticationScreen/AuthProvider.dart';
 import 'package:instachat/Screens/AuthenticationScreen/ForgotPassword.dart';
@@ -19,7 +17,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  User? user;
 
   @override
   Widget build(BuildContext context) {
@@ -245,63 +242,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ref.read(selectedRoleProvider),
                       ).then((value) {
                         if (value == 'Success') {
-                          getUser().then((user) {
-                            if (user != null) {
-                              if (user.emailVerification == false) {
-                                Navigator.pushReplacementNamed(
-                                  context,
-                                  '/verify',
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    backgroundColor: Colors.amber,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(11),
-                                      ),
-                                    ),
-                                    behavior: SnackBarBehavior.floating,
-                                    content: Text(
-                                      "LoggedIn Successfully",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                                Future.delayed(
-                                  const Duration(milliseconds: 300),
-                                  () {
-                                    Navigator.pushReplacementNamed(
-                                      context,
-                                      '/home',
-                                    );
-                                  },
-                                );
-                              }
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  backgroundColor: Colors.amber,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(11),
-                                    ),
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  content: Text(
-                                    "Failed To Get User",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                          Navigator.pushReplacementNamed(context, '/home');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.amber,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(11),
                                 ),
-                              );
-                            }
-                          });
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              content: const Text(
+                                'Login Successful',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          );
+                        } else if (value == 'Unverified') {
+                          Navigator.pushReplacementNamed(context, '/verify');
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

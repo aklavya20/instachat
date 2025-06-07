@@ -2,6 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:instachat/Constants/Constants.dart';
 import 'package:instachat/Appwrite/AppwriteService.dart';
+import 'dart:convert';
 
 Constants constants = Constants();
 
@@ -12,23 +13,6 @@ Client client = Client()
 Account account = Account(client);
 Functions functions = Functions(client);
 
-// Future updateUserLabel(String userId, String role) async {
-//   try {
-//     final result = await functions.createExecution(
-//       functionId: '67fe759000389b9ca0ec',
-//       path: jsonEncode({'userId': userId, 'labels': role}),
-//     );
-//     print("This is Our Result:result");
-//     return result.status == 'completed'
-//         ? 'Label Updated'
-//         : 'Failed to update label';
-//   } on AppwriteException catch (e) {
-//     return e.message.toString();
-//   } catch (e) {
-//     print('Error: $e');
-//   }
-// }
-
 Future createUser(
   String username,
   String email,
@@ -37,13 +21,20 @@ Future createUser(
 ) async {
   String userId = ID.unique();
   try {
+    print(
+      "Logs: User: $username, Email: $email, Password: $password, Role: $role",
+    );
     await account.create(
       userId: userId,
       name: username,
       email: email,
       password: password,
     );
-    //here
+    final result = await functions.createExecution(
+      functionId: constants.AppwriteFunctionId,
+      body: jsonEncode({'userId': userId, 'role': role}),
+    );
+    print('Function execution result: ${result.responseBody}');
     return 'Success';
   } on AppwriteException catch (e) {
     return e.message.toString();

@@ -20,19 +20,20 @@ export default async function main(context) {
       });
     }
 
-    const { userId, role } = JSON.parse(rawBody);
+    const { userId } = JSON.parse(rawBody);
 
-    if (!userId || !role) {
+    if (!userId) {
       return context.res.send({
         status: "error",
-        message: "Missing userId or role in payload",
+        message: "Missing userId in payload",
       });
     }
 
-    const result = await users.updateLabels(userId, [role]);
+    const result = await users.updateEmailVerification(userId, true);
 
     return context.res.send({
       status: "success",
+      message: `User ${userId} verified successfully.`,
       user: result,
     });
   } catch (error) {

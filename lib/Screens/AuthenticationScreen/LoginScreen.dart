@@ -199,21 +199,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/signup');
-                      },
-                      child: const Text(
-                        "Don't have an account? Sign Up",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                    // TextButton(
+                    //   onPressed: () {
+                    //     Navigator.pushNamed(context, '/signup');
+                    //   },
+                    //   child: const Text(
+                    //     "Don't have an account? Sign Up",
+                    //     style: TextStyle(
+                    //       color: Colors.blue,
+                    //       fontSize: 12,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //   ),
+                    // ),
                     TextButton(
                       onPressed: () {
                         showDialog(

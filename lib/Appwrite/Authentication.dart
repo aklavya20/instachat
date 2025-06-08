@@ -31,7 +31,7 @@ Future createUser(
       password: password,
     );
     final result = await functions.createExecution(
-      functionId: constants.AppwriteFunctionId,
+      functionId: constants.AppwriteLabelsFunctionId,
       body: jsonEncode({'userId': userId, 'role': role}),
     );
     print('Function execution result: ${result.responseBody}');
